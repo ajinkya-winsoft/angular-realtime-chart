@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Tet</title>
+       <script src="js/d3.v4.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+        var svgContainer = d3.select("body").append("svg")
+                                        .attr("width", 400)
+                                        .attr("height", 100);
+
+       //Create the Scale we will use for the Axis
+       var axisScale = d3.scaleLinear()
+                                .domain([0, 100])
+                                .range([0, 400]);
+
+      //Create the Axis
+      var xAxis = d3.axis()
+                         .scale(axisScale);
+
+
+      //Create an SVG group Element for the Axis elements and call the xAxis function
+      var xAxisGroup = svgContainer.append("g")
+                                    .call(xAxis);
+        </script>
+    </body>
+</html>

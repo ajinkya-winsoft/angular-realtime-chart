@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Tet</title>
+       <script src="js/d3.v4.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+        var theData = [ 1, 2, 3 ]
+
+        var p = d3.select("body").selectAll("p")
+          .data(theData)
+          .enter()
+          .append("p")
+          .text( function (d) { return d; } );
+        </script>
+    </body>
+</html>
