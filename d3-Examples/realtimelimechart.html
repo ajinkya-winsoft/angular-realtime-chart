@@ -8,7 +8,7 @@
 }
 </style>
 <svg width="960" height="500"></svg>
-<script src="//d3js.org/d3.v4.min.js"></script>
+  <script src="http://d3js.org/d3.v4.min.js"></script>
 <script>
 var n = 40,
     random = d3.randomNormal(0, .2),
@@ -51,11 +51,20 @@ g.append("g")
 function tick() {
   // Push a new data point onto the back.
   data.push(random());
+
+x.domain([0, n - 1])
+.range([0, width])
+
+d3.selectAll("g .axis.axis--x")
+  .attr('transform', 'translate(' + x(-10) + ',height)')
+  .call((d3.axisBottom(x)));
+  //.call(d3.axisBottom(x));
   // Redraw the line.
   d3.select(this)
       .attr("d", line)
       .attr("transform", null);
   // Slide it to the left.
+
   d3.active(this)
       .attr("transform", "translate(" + x(-1) + ",0)")
     .transition()
