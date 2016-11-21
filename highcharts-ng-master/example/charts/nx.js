@@ -2,11 +2,37 @@
 
 var myapp = angular.module('myapp', ["highcharts-ng"]);
 
-myapp.controller('myctrl', function ($scope) {
+myapp.controller('myctrl', function ($scope, $interval) {
 
 
 
+        $scope.chartSeries =[
+           
+            {
+                id: 'iphoneUsageData',
+                name: 'Usage Time',
+                data: (function () {
+                             // generate an array of random data
+                             var data = [],
+                                     time = (new Date()).getTime(),
+                                     i;
 
+                             for (i = -999; i <= 0; i += 1) {
+                                     data.push([
+                                             time + i * 1000,
+                                             Math.round(Math.random() * 100)
+                                     ]);
+                             }
+                             return data;
+                     }()),
+                type: 'line',
+                yAxis: 0,
+                tooltip: {
+                    valueSuffix: ' sec'
+                },
+                color: '#c680ca'
+            }
+        ],
 
 
     $scope.chartConfig = {
@@ -17,6 +43,7 @@ myapp.controller('myctrl', function ($scope) {
             chart: {
                 backgroundColor: 'transparent',
                 zoomType: 'x',
+                type : 'stockchart',
                 resetZoomButton: {
                     position: {
                         x: 0,
@@ -39,13 +66,27 @@ myapp.controller('myctrl', function ($scope) {
             },
             navigator: {
                 enabled: true,
-                series: {
-                    data: []
-                }
+                // series: {
+                //     data: []
+                // }
             },
             rangeSelector: {
-                enabled: true
-                selected : 1
+               enabled: true,
+                        selected: 0,
+                    //  allButtonsEnabled: true,
+                buttons: [{
+                    count: 1,
+                    type: 'minute',
+                    text: '1M'
+                }, {
+                    count: 2,
+                    type: 'minute',
+                    text: '2M'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }]
+
             },
             plotOptions: {
                 series: {
@@ -151,32 +192,16 @@ myapp.controller('myctrl', function ($scope) {
             useHighStocks: true
 
         },
-        series: [
-            {
-                id: 'iphoneNotificationData',
-                name: 'Notifications',
-                data: [[1426204800000,12],[1426464000000,6],[1426550400000,10],[1426636800000,3]],
-                type: 'column',
-                yAxis: 0,
-                color: '#80a3ca'
-            },
-            {
-                id: 'iphoneUsageData',
-                name: 'Usage Time',
-                data: [[1426291200000,5],[1426809600000,26]],
-                type: 'line',
-                yAxis: 1,
-                tooltip: {
-                    valueSuffix: ' sec'
-                },
-                color: '#c680ca'
-            }
-        ],
+        series: $scope.chartSeries,
 
         func: function (chart) {
-            console.log(chart);
-            $scope.chartData = chart;
-            $scope.chartExport = $.proxy(chart.exportChart, chart);
+          $interval(function() {
+                if($scope.chartSeries[0].data.length > 300)
+                          $scope.chartSeries[0].data.splice(0,1);
+
+                          $scope.chartSeries[0].data.push([(new Date()).getTime(),Math.random()]);
+                          //console.log("hi");
+              }, 1000);
         }
 
 
